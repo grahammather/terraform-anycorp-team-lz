@@ -21,3 +21,7 @@ variable "environments" {
 variable "vault_jwt_auth_path" {
   type = string
 }
+
+variable "tfe_variable_set_vault_id" {
+  type = string
+}
