@@ -17,7 +17,3 @@ variable "environments" {
     error_message = "Valid environment values are: dev, test, prod."
   }
 }
-
-variable "vault_url" {
-  type = string
-}

@@ -34,6 +34,19 @@ resource "tfe_project_variable_set" "name" {
   variable_set_id = data.tfe_variable_set.vault.id
 }
 
+resource "tfe_variable" "tfc_vault_role" {
+  for_each = local.workspace_keys
+
+  workspace_id = each.value.workspace_id
+
+  key      = "TFC_VAULT_RUN_ROLE"
+  value    = each.value.workspace_vault_role_name
+  category = "env"
+
+  description = "The Vault role runs will use to authenticate."
+}
+
+
 # Vault landing zone
 
 # APM Policies
@@ -68,14 +81,14 @@ resource "vault_policy" "secrets_reader" {
 # Configure the actual secrets the token should have access to
 
 # KV home directory
-path "secret/${apm_name}/*" {
+path "secret/${var.apm_name}/*" {
   capabilities = ["read"]
 }
 
 # Azure dynamic creds role
 # the Azure creds themselves have more access (e.g. the ability to create infra)
 # this is just the capabilities that the apm has to interact with Vault 
-path "azure/creds/${apm_name}" {
+path "azure/creds/${var.apm_name}" {
   capabilities = ["read"]
 }
 
@@ -93,7 +106,7 @@ resource "vault_jwt_auth_backend_role" "tfc_workspace_reader_role" {
   for_each = local.workspace_keys
 
   backend        = vault_jwt_auth_backend.tfc_jwt.path
-  role_name      = "${var.apm_name}-tfc-workspace-reader-role"
+  role_name      = "${var.apm_name}-tfc-${each.value.workspace_name}-reader-role"
   token_policies = [vault_policy.tfc_policy.name, vault_policy.secrets_reader]
 
   bound_audiences   = [local.tfc_vault_audience]
