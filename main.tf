@@ -105,7 +105,7 @@ EOT
 resource "vault_jwt_auth_backend_role" "tfc_workspace_reader_role" {
   for_each = local.workspace_keys
 
-  backend        = vault_jwt_auth_backend.tfc_jwt.path
+  backend        = var.vault_jwt_auth_path
   role_name      = "${var.apm_name}-tfc-${each.value.workspace_name}-reader-role"
   token_policies = [vault_policy.tfc_policy.name, vault_policy.secrets_reader]
 
