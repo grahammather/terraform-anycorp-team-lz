@@ -14,6 +14,11 @@ terraform {
 }
 
 # TFE landing zone
+data "tfe_variable_set" "vault" {
+  name         = "vault"
+  organization = var.org_name
+}
+
 resource "tfe_project" "project" {
   name = "${var.apm_name} project"
 }
@@ -22,6 +27,11 @@ resource "tfe_workspace" "workspace" {
   for_each = toset(var.environments)
 
   name = "${var.apm_name} ${each.key} workspace"
+}
+
+resource "tfe_project_variable_set" "name" {
+  project_id = tfe_project.project.id
+  variable_set_id = data.tfe_variable_set.vault.id
 }
 
 # Vault landing zone
