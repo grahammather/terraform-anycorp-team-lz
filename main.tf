@@ -46,29 +46,6 @@ resource "tfe_variable" "tfc_vault_role" {
 
 # APM Policies
 
-# tfc workspace run policy - TFE workspaces must be able to renew and revoke their own tokens
-resource "vault_policy" "tfc_policy" {
-  name = "tfc-policy"
-
-  policy = <<EOT
-# Allow tokens to query themselves
-path "auth/token/lookup-self" {
-  capabilities = ["read"]
-}
-
-# Allow tokens to renew themselves
-path "auth/token/renew-self" {
-    capabilities = ["update"]
-}
-
-# Allow tokens to revoke themselves
-path "auth/token/revoke-self" {
-    capabilities = ["update"]
-}
-
-EOT
-}
-
 resource "vault_policy" "secrets_reader" {
   name = "secrets-reader"
 
@@ -102,7 +79,7 @@ resource "vault_jwt_auth_backend_role" "tfc_workspace_reader_role" {
 
   backend        = var.vault_jwt_auth_path
   role_name      = "${var.apm_name}-tfc-${each.value.workspace_name}-reader-role"
-  token_policies = [vault_policy.tfc_policy.name, vault_policy.secrets_reader.name]
+  token_policies = ["tfc-policy", vault_policy.secrets_reader.name]
 
   bound_audiences   = [local.tfc_vault_audience]
   bound_claims_type = "glob"
