@@ -1,7 +1,3 @@
-variable "org_name" {
-  type = string
-}
-
 variable "apm_name" {
   type = string
 }

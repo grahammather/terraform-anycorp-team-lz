@@ -13,9 +13,23 @@ terraform {
   }
 }
 
+data "tfe_organizations" "this" {}
+
+data "tfe_organization" "this" {
+  name = data.tfe_organizations.this.names[0]
+
+  lifecycle {
+    precondition {
+      condition     = length(data.tfe_organizations.this.names) == 1
+      error_message = "Expected exactly one TFE organization for this token, but found ${length(data.tfe_organizations.this.names)}."
+    }
+  }
+}
+
 # TFE landing zone
 resource "tfe_project" "project" {
   name = "${var.apm_name} project"
+  organization = data.tfe_organization.this.name
 }
 
 resource "tfe_workspace" "workspace" {
