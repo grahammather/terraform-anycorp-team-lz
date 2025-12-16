@@ -98,7 +98,7 @@ resource "vault_jwt_auth_backend_role" "tfc_workspace_reader_role" {
   bound_audiences   = [local.tfc_vault_audience]
   bound_claims_type = "glob"
   bound_claims = {
-    sub = "organization:${var.org_name}:project:${tfe_project.project.name}:workspace:${each.value.workspace_name}:run_phase:*"
+    sub = "organization:${data.tfe_organization.this.name}:project:${tfe_project.project.name}:workspace:${each.value.workspace_name}:run_phase:*"
   }
   user_claim = "terraform_full_workspace"
   role_type  = "jwt"
