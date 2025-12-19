@@ -35,6 +35,7 @@ resource "tfe_project" "project" {
 resource "tfe_workspace" "workspace" {
   for_each = toset(var.environments)
 
+  organization = data.tfe_organization.this.name
   name = "${var.apm_name} ${each.key} workspace"
 }
 
