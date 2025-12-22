@@ -28,7 +28,7 @@ data "tfe_organization" "this" {
 
 # TFE landing zone
 resource "tfe_project" "project" {
-  name = "${var.apm_name} project"
+  name = "${var.apm_name}-project"
   organization = data.tfe_organization.this.name
 }
 
@@ -36,7 +36,7 @@ resource "tfe_workspace" "workspace" {
   for_each = toset(var.environments)
 
   organization = data.tfe_organization.this.name
-  name = "${var.apm_name} ${each.key} workspace"
+  name = "${var.apm_name}-${each.key}-workspace"
 }
 
 resource "tfe_project_variable_set" "name" {
