@@ -17,6 +17,11 @@ data "tfe_variable_set" "vault" {
   organization = data.tfe_organization.this.name
 }
 
+data "tfe_oauth_client" "client" {
+  organization     = data.tfe_organization.this.name
+  service_provider = "github"
+}
+
 module "anycorp-team-lz" {
   source  = "./../.."
   # insert required variables here
@@ -27,4 +32,6 @@ module "anycorp-team-lz" {
   # sensible defaults/static config
   vault_jwt_auth_path = "jwt"
   tfe_variable_set_vault_id = data.tfe_variable_set.vault.id
+
+  oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
 }

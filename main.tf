@@ -42,11 +42,12 @@ resource "tfe_workspace" "workspace" {
   organization = data.tfe_organization.this.name
   name = "${var.apm_name}-${each.key}-workspace"
 
-  vcs_repo {
-    branch                     = "main"
-    identifier                 = "grahammather/terraform-anycorp-team-lz"
-    github_app_installation_id = data.tfe_github_app_installation.default.id
-  }
+  # vcs_repo {
+  #   branch                     = "main"
+  #   identifier                 = "grahammather/terraform-anycorp-team-lz"
+  #   oauth_token_id             = var.oauth_token_id
+  # }
+
   working_directory = "example/apm-${each.key}"
 }
 

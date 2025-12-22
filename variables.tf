@@ -22,3 +22,6 @@ variable "tfe_variable_set_vault_id" {
   type = string
 }
 
+variable "oauth_token_id" {
+  type = string
+}
