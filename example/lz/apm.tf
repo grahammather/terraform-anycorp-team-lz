@@ -18,7 +18,7 @@ data "tfe_variable_set" "vault" {
 }
 
 module "anycorp-team-lz" {
-  source  = "./.."
+  source  = "./../.."
   # insert required variables here
 
   apm_name = var.apm_name

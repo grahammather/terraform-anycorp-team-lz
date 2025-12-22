@@ -21,3 +21,8 @@ variable "vault_jwt_auth_path" {
 variable "tfe_variable_set_vault_id" {
   type = string
 }
+
+variable "github_repository" {
+  type        = string
+  description = "Name of the GitHub repository."
+}

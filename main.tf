@@ -26,6 +26,10 @@ data "tfe_organization" "this" {
   }
 }
 
+data "tfe_github_app_installation" "default" {
+  name = data.tfe_organization.this.name
+}
+
 # TFE landing zone
 resource "tfe_project" "project" {
   name = "${var.apm_name}-project"
@@ -37,6 +41,13 @@ resource "tfe_workspace" "workspace" {
 
   organization = data.tfe_organization.this.name
   name = "${var.apm_name}-${each.key}-workspace"
+
+  vcs_repo {
+    branch                     = "main"
+    identifier                 = "grahammather/terraform-anycorp-team-lz"
+    github_app_installation_id = data.tfe_github_app_installation.default.id
+  }
+  working_directory = "example/apm-${each.key}"
 }
 
 resource "tfe_project_variable_set" "name" {
