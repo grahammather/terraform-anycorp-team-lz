@@ -21,8 +21,8 @@ module "anycorp-team-lz" {
   source  = "./.."
   # insert required variables here
 
-  apm_name = "apm123"
-  environments = ["dev","prod"]
+  apm_name = var.apm_name
+  environments = var.environments
 
   # sensible defaults/static config
   vault_jwt_auth_path = "jwt"
