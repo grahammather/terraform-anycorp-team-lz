@@ -23,7 +23,7 @@ data "tfe_oauth_client" "client" {
 }
 
 module "anycorp-team-lz" {
-  source  = "./../.."
+  source  = "./../../.."
   # insert required variables here
 
   apm_name = var.apm_name
@@ -32,6 +32,4 @@ module "anycorp-team-lz" {
   # sensible defaults/static config
   vault_jwt_auth_path = "jwt"
   tfe_variable_set_vault_id = data.tfe_variable_set.vault.id
-
-  oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
 }
