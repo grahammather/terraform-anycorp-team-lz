@@ -26,10 +26,6 @@ data "tfe_organization" "this" {
   }
 }
 
-data "tfe_github_app_installation" "default" {
-  name = data.tfe_organization.this.name
-}
-
 # TFE landing zone
 resource "tfe_project" "project" {
   name = "${var.apm_name}-project"
